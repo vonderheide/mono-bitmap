@@ -20,5 +20,10 @@
   "files": [
     "MonochromeBitmapImage.js",
     "LICENSE"
-  ]
+  ],
+  "homepage": "https://github.com/vonderheide/mono-bitmap",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vonderheide/mono-bitmap.git"
+  }
 }
