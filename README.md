@@ -2,6 +2,8 @@
 
 node.js package to create in-memory monochrome bitmaps.
 
+[![Build Status](https://travis-ci.org/vonderheide/mono-bitmap.svg?branch=master)](https://travis-ci.org/vonderheide/mono-bitmap)
+
 ## Features
 
 * Create a greyscale bitmap in a node.js Buffer.
