@@ -15,7 +15,7 @@ node.js package to create in-memory monochrome bitmaps.
 
 ## Example
 
-´´´javascript
+```javascript
 var MonochromeBitmapImage = require('mono-bitmap');
 // create 100x50 image with 2 bytes per pixel in little-endian order.
 var image = new MonochromeBitmapImage(100, 50, 2, MonochromeBitmapImage.Endian.LITTLE);
@@ -23,7 +23,7 @@ var image = new MonochromeBitmapImage(100, 50, 2, MonochromeBitmapImage.Endian.L
 image.drawFilledRect(10, 10, 90, 30, 32817, 65535);
 // put a gradient from black to white inside the rectangle
 image.drawGradientRect(20, 20, 70, 10, 0, 65535);
-´´´
+```
 
 ## License
 
