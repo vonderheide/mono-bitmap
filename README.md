@@ -1,4 +1,4 @@
-# mono-image
+# mono-bitmap
 
 node.js package to create in-memory monochrome bitmaps.
 
