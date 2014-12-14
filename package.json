@@ -1,0 +1,24 @@
+{
+  "name": "mono-bitmap",
+  "description": "Creates in-memory monochrome bitmaps.",
+  "keywords": [
+    "image",
+    "bitmap"
+  ],
+  "author": "Jens Vonderheide <jens@vdheide.de>",
+  "main": "MonochromeBitmapImage.js",
+  "version": "0.0.1",
+  "devDependencies": {
+    "eslint": "^0.10.2",
+    "jasmine-node": "^1.14.5"
+  },
+  "scripts": {
+    "test": "jasmine-node spec",
+    "lint": "eslint MonochromeBitmapImage.js"
+  },
+  "license": "MIT",
+  "files": [
+    "MonochromeBitmapImage.js",
+    "LICENSE"
+  ]
+}
