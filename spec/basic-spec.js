@@ -11,6 +11,14 @@ describe("Creation", function () {
         expect(image.data().length).toBe(5 * 10 * 2);
     });
 
+    it("all pixels are initially zero", function () {
+        var image = new MonochromeBitmapImage(5, 10, 2);
+        var data = image.data();
+        for (var i = 0; i < data.length; i++) {
+            expect(data[i]).toBe(0);
+        }
+    });
+
     it("throws an exception when called with invalid bytes per pixel", function () {
         var create = function (bytesPerPixel) {
             return new MonochromeBitmapImage(1, 1, bytesPerPixel);

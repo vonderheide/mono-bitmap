@@ -7,7 +7,7 @@
   ],
   "author": "Jens Vonderheide <jens@vdheide.de>",
   "main": "MonochromeBitmapImage.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "devDependencies": {
     "eslint": "0.10.2",
     "jasmine-node": "1.14.5"

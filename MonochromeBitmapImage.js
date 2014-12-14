@@ -126,4 +126,6 @@ function MonochromeBitmapImage(columns, rows, bytesPerPixel, endianess) {
             throw "Bytes per pixel must be 1, 2 or 4";
         }
     }
+
+    this.clear();
 }
