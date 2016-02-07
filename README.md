@@ -1,4 +1,4 @@
-# mono-bitmap
+# bitmap_manipulation
 
 Node.js package for in-memory bitmap manipulation.
 
@@ -7,9 +7,11 @@ Node.js package for in-memory bitmap manipulation.
 ## Features
 
 * Creating bitmaps (1, 2 or 4 bytes per pixel, in big- or little-endian)
+* Changing the color depth
 * Reading 8-bit .bmp files
+* Saving .bmp files
 * Getting/setting pixels
-* Change the color of every pixel in specific color
+* Change the color of every pixel in a specific color
 * Drawing rectangles (horizontal gradient in greyscale possible)
 * Drawing circles/ellipses
 * Inverting the bitmap
@@ -21,26 +23,34 @@ Node.js package for in-memory bitmap manipulation.
 ```javascript
 "use strict";
 
-const monoBitmapModule = require("mono-bitmap");
+const bitmapManipulation = require("bitmap_manipulation");
 
-let bitmap = new monoBitmapModule.Bitmap(400, 300);
+// Create bitmap
+let bitmap = new bitmapManipulation.Bitmap(400, 300);
+
 // Draw rectangle with border
 bitmap.drawRectangle(10, 10, 100, 50, 0x00, 0xff);
+
 // Draw another bitmap with some source pixels in a specific color handled as transparent
 let overlayBitmap = Bitmap.fromFile("overlayBitmap.bmp");
 bitmap.drawBitmap(overlayBitmap, 200, 0, overlayBitmap.getPalette().indexOf(0xff00ff/*magenta*/));
+
 // Draw text
-let font = new monoBitmapModule.Font("P:\\ath\\to\\Font.json");
+let font = new bitmapManipulation.Font("P:\\ath\\to\\Font.json");
 font.setSize(20);
 bitmap.drawText(font, "Hello World!", 10, 100);
-// Then the raw pixel data can be processed in a user-specific way
+
+// The raw pixel data can also be processed in a user-specific way
 let bitmapData = bitmap.getData();  // Return a Node.js Buffer
 ```
 
 ## Documentation
 
-[JSDoc](http://usejsdoc.org/) has problems seeing the nested class methods. So please see the source
-code.
+The documentation can be generated from the source code by:
+
+<pre>
+[jsdoc](http://usejsdoc.org/) index.js
+</pre>
 
 ## License
 

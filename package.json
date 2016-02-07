@@ -1,6 +1,6 @@
 {
-	"name": "mono-bitmap",
-	"description": "In-memory bitmap manipulation (reading file, drawing shapes and text)",
+	"name": "bitmap_manipulation",
+	"description": "Bitmap manipulation (reading file, drawing shapes and text)",
 	"keywords": [
 		"bitmap",
 		"image",
