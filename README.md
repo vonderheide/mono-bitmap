@@ -1,35 +1,56 @@
-# mono-bitmap
+# bitmap_manipulation
 
-node.js package to create in-memory monochrome bitmaps.
+Node.js package for in-memory bitmap manipulation.
 
 [![Build Status](https://travis-ci.org/vonderheide/mono-bitmap.svg?branch=master)](https://travis-ci.org/vonderheide/mono-bitmap)
 
 ## Features
 
-* Create a greyscale bitmap in a node.js Buffer.
-* Use 1, 2 or 4 bytes per pixel, in big or little endian.
-* Basic drawing operations
-  * Set individual pixels to greyscale colors.
-  * Filled rectangle with border
-  * Rectangle filled with a horizontal gradient.
+* Creating bitmaps (1, 2 or 4 bytes per pixel, in big- or little-endian)
+* Changing the color depth
+* Reading 8-bit .bmp files
+* Saving .bmp files
+* Getting/setting pixels
+* Change the color of every pixel in a specific color
+* Drawing rectangles (horizontal gradient in greyscale possible)
+* Drawing circles/ellipses
+* Inverting the bitmap
+* Drawing a bitmap or a portion of it on a bitmap
+* Drawing text with a bitmap font
 
 ## Example
 
 ```javascript
-var MonochromeBitmapImage = require('mono-bitmap');
-// create 100x50 image with 2 bytes per pixel in little-endian order.
-var image = new MonochromeBitmapImage(100, 50, 2, MonochromeBitmapImage.Endian.LITTLE);
-// draw a rectangle with medium-grey border, filled with white
-image.drawFilledRect(10, 10, 80, 30, 32817, 65535);
-// put a gradient from black to white inside the rectangle
-image.drawGradientRect(20, 20, 60, 10, 0, 65535);
+"use strict";
 
-// write pixel data to file
-var fs = require('fs');
-var stream = fs.createWriteStream('image.raw');
-stream.write(image.data());
-stream.end();
+const bitmapManipulation = require("bitmap_manipulation");
+
+// Create bitmap
+let bitmap = new bitmapManipulation.Bitmap(400, 300);
+
+// Draw rectangle with border
+bitmap.drawFilledRect(10, 10, 100, 50, 0x00, 0xff);
+
+// Draw another bitmap with some source pixels in a specific color handled as transparent
+let overlayBitmap = Bitmap.fromFile("overlayBitmap.bmp");
+bitmap.drawBitmap(overlayBitmap, 200, 0, overlayBitmap.getPalette().indexOf(0xff00ff/*magenta*/));
+
+// Draw text
+let font = new bitmapManipulation.Font("P:\\ath\\to\\Font.json");
+font.setSize(20);
+bitmap.drawText(font, "Hello World!", 10, 100);
+
+// The raw pixel data can also be processed in a user-specific way
+let bitmapData = bitmap.data();  // Return a Node.js Buffer
 ```
+
+## Documentation
+
+The documentation can be generated from the source code by:
+
+<pre>
+[jsdoc](http://usejsdoc.org/) index.js
+</pre>
 
 ## License
 

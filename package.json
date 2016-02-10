@@ -1,24 +1,38 @@
 {
-  "name": "mono-bitmap",
-  "description": "Creates in-memory monochrome bitmaps.",
+  "name": "bitmap_manipulation",
+  "description": "Bitmap manipulation (reading file, drawing shapes and text)",
   "keywords": [
+    "bitmap",
     "image",
-    "bitmap"
+    "BMP",
+    "manipulation"
   ],
   "author": "Jens Vonderheide <jens@vdheide.de>",
-  "main": "MonochromeBitmapImage.js",
-  "version": "0.0.2",
+  "contributors": [
+    {
+      "name": "J Waechter",
+      "url": "https://github.com/j-waechter"
+    }
+  ],
+  "main": "index.js",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "dependencies": {
+    "struct-fu": "^1.0.0"
+  },
   "devDependencies": {
     "eslint": "0.10.2",
     "jasmine-node": "1.14.5"
   },
   "scripts": {
-    "test": "jasmine-node spec",
-    "lint": "eslint MonochromeBitmapImage.js"
+    "test": "jasmine-node --captureExceptions spec",
+    "lint": "eslint index.js"
   },
   "license": "MIT",
   "files": [
-    "MonochromeBitmapImage.js",
+    "index.js",
     "LICENSE"
   ],
   "homepage": "https://github.com/vonderheide/mono-bitmap",

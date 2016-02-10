@@ -1,10 +1,10 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-var MonochromeBitmapImage = require("../");
-var image = new MonochromeBitmapImage(20, 20, 1);
-var FOREGROUND = 10;
-var BACKGROUND = 100;
+const bitmapManipulation = require("../");
+const image = new bitmapManipulation.Bitmap(20, 20, 1);
+const FOREGROUND = 10;
+const BACKGROUND = 100;
 
 describe("Drawing", function () {
 
