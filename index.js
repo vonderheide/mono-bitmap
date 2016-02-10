@@ -70,7 +70,7 @@ const DEFAULT_PALETTE = [0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800
 
 let Endianness =
 /**
- * @enum {integer}
+ * @enum {number}
  */
 exports.Endianness = {
     BIG: 0,
@@ -83,9 +83,9 @@ let Bitmap =
  * palette.
  *
  * @class
- * @param {integer} width
- * @param {integer} height
- * @param {integer} [bytesPerPixel=1] Possible values: <code>1</code>, <code>2</code>,
+ * @param {number} width
+ * @param {number} height
+ * @param {number} [bytesPerPixel=1] Possible values: <code>1</code>, <code>2</code>,
  *                                    <code>4</code>
  * @param {Endianness} [endianness=BIG] Use big- or little-endian when storing multiple bytes per
  *                                      pixel
@@ -166,7 +166,8 @@ exports.Bitmap = (function() {
 			let filePosition = offsetAfterHeader;
 			fileBuffer = new Buffer(4);
 			while (filePosition < header.dataOffset) {
-				let numberOfBytesRead = fs.readSync(file, fileBuffer, 0, fileBuffer.length, null);
+				//noinspection JSDuplicatedDeclaration
+                let numberOfBytesRead = fs.readSync(file, fileBuffer, 0, fileBuffer.length, null);
 				if (numberOfBytesRead != fileBuffer.length) {
 					hasError = true;
 					errorMessage = `Unexpected end of file in "${filePath}"`;
@@ -181,12 +182,13 @@ exports.Bitmap = (function() {
 		}
 		// Read pixels
 		if (!hasError) {
-			let bitmapData = bitmap.getData();
+			let bitmapData = bitmap.data();
 			let numberOfBytesPerLine = Math.ceil(header.width * header.bitsPerPixel / 8/*bits*/ /
 					4/*bytes*/) * 4/*bytes*/;
 			fileBuffer = new Buffer(numberOfBytesPerLine);
 			for (let y = header.height - 1; y >= 0; y--) {
-				let numberOfBytesRead = fs.readSync(file, fileBuffer, 0, numberOfBytesPerLine,
+				//noinspection JSDuplicatedDeclaration
+                let numberOfBytesRead = fs.readSync(file, fileBuffer, 0, numberOfBytesPerLine,
 						null);
 				if (numberOfBytesRead != numberOfBytesPerLine) {
 					hasError = true;
@@ -206,7 +208,7 @@ exports.Bitmap = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Bitmap#getWidth
-     * @returns {integer}
+     * @returns {number}
      */
     prototype.getWidth = function() {
         return this._width;
@@ -214,7 +216,7 @@ exports.Bitmap = (function() {
 
     /**
 	 * @method module:bitmap_manipulation.Bitmap#getHeight
-     * @returns {integer}
+     * @returns {number}
      */
     prototype.getHeight = function() {
         return this._height;
@@ -222,7 +224,7 @@ exports.Bitmap = (function() {
 
     /**
 	 * @method module:bitmap_manipulation.Bitmap#getBytesPerPixel
-     * @returns {integer}
+     * @returns {number}
      */
     prototype.getBytesPerPixel = function() {
         return this._bytesPerPixel;
@@ -230,7 +232,7 @@ exports.Bitmap = (function() {
 
     /**
 	 * @method module:bitmap_manipulation.Bitmap#getEndianness
-     * @returns {integer}
+     * @returns {number}
      */
     prototype.getEndianness = function() {
         return this._endianness;
@@ -238,7 +240,7 @@ exports.Bitmap = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Bitmap#getPalette
-	 * @returns {integer[]} An array of RGB colors (<code>0xRRGGBB</code>) to indices. You can use
+	 * @returns {number[]} An array of RGB colors (<code>0xRRGGBB</code>) to indices. You can use
 	 *                      <code>indexOf()</code> to get a color for the other methods
 	 */
 	prototype.getPalette = function() {
@@ -246,10 +248,10 @@ exports.Bitmap = (function() {
 	};
 
     /**
-	 * @method module:bitmap_manipulation.Bitmap#getData
+	 * @method module:bitmap_manipulation.Bitmap#data
      * @returns {Buffer} The byte data of this bitmap
      */
-    prototype.getData = function() {
+    prototype.data = function() {
         return this._data;
     };
 
@@ -260,7 +262,7 @@ exports.Bitmap = (function() {
 	 * than 256 different colors in the source pixels, the rest is set to <code>0x00</code>.
 	 *
 	 * @method module:bitmap_manipulation.Bitmap#changeColorDepth
-     * @param {integer} bytesPerPixel
+     * @param {number} bytesPerPixel
 	 * @throws {Error} Invalid parameter
 	 */
 	prototype.changeColorDepth = function(bytesPerPixel) {
@@ -326,7 +328,7 @@ exports.Bitmap = (function() {
 						}
 					}
 					this._writeFunction.call(this._data, colorIndex, offset);
-				};
+				}.bind(this);
 				break;
 			} case 2: {
 				setDestinationRgbColor = function(offset, color) {
@@ -336,12 +338,12 @@ exports.Bitmap = (function() {
 						Math.round((color       & 0xff) / 0xff *  0b11111)
 					;
 					this._writeFunction.call(this._data, color, offset);
-				};
+				}.bind(this);
 				break;
 			} case 4: {
 				setDestinationRgbColor = function(offset, color) {
 					this._writeFunction.call(this._data, color, offset);
-				};
+				}.bind(this);
 				break;
 			}
 		}
@@ -373,7 +375,7 @@ exports.Bitmap = (function() {
      * Sets all data bytes (not necessarily pixels) to the specified value.
 	 *
 	 * @method module:bitmap_manipulation.Bitmap#clear
-	 * @param {integer} [byteValue=0]
+	 * @param {number} [byteValue=0]
      */
     prototype.clear = function(byteValue) {
 		if (!byteValue) {
@@ -384,9 +386,9 @@ exports.Bitmap = (function() {
 
     /**
 	 * @method module:bitmap_manipulation.Bitmap#getPixel
-     * @param {integer} x X-coordinate
-     * @param {integer} y Y-coordinate
-     * @returns {integer} The pixel color or <code>null</code> when the coordinates are out of the
+     * @param {number} x X-coordinate
+     * @param {number} y Y-coordinate
+     * @returns {number} The pixel color or <code>null</code> when the coordinates are out of the
 	 *                    bitmap surface
      */
     prototype.getPixel = function(x, y) {
@@ -404,9 +406,9 @@ exports.Bitmap = (function() {
      * Sets the pixel at the given coordinates.
      *
 	 * @method module:bitmap_manipulation.Bitmap#setPixel
-     * @param {integer} x X-coordinate
-     * @param {integer} y Y-coordinate
-     * @param {integer} color The raw pixel value according to the bytes per pixel
+     * @param {number} x X-coordinate
+     * @param {number} y Y-coordinate
+     * @param {number} color The raw pixel value according to the bytes per pixel
      */
     prototype.setPixel = function(x, y, color) {
 		if (x >= 0 && x < this._width) {
@@ -419,8 +421,8 @@ exports.Bitmap = (function() {
 	 * Sets the color of every pixel in a specific color to a new color.
 	 *
 	 * @method module:bitmap_manipulation.Bitmap#replaceColor
-	 * @param {integer} color The current color to get rid of
-	 * @param {integer} newColor The new color to use for the identified pixels
+	 * @param {number} color The current color to get rid of
+	 * @param {number} newColor The new color to use for the identified pixels
 	 */
 	prototype.replaceColor = function(color, newColor) {
 		for (let offset = 0; offset < this._data.length; offset += this._bytesPerPixel) {
@@ -434,19 +436,17 @@ exports.Bitmap = (function() {
      * Draws a rectangle, optionally filled, optionally with a border.
 	 *
 	 * @method module:bitmap_manipulation.Bitmap#drawRectangle
-     * @param {integer} left Starting x coordinate
-     * @param {integer} top Starting y coordinate
-     * @param {integer} width Width of the rectangle
-     * @param {integer} height Height of the rectangle
-	 * @param {integer} color Color to fill the rectangle with. Pass <code>null</code> to indicate
+     * @param {number} left Starting x coordinate
+     * @param {number} top Starting y coordinate
+     * @param {number} width Width of the rectangle
+     * @param {number} height Height of the rectangle
+	 * @param {?number} borderColor Color of the border. Pass <code>null</code> to indicate
+	 *                        no border
+	 * @param {?number} fillColor Color to fill the rectangle with. Pass <code>null</code> to indicate
 	 *                        no filling
-     * @param {integer} [borderColor] Color of the border
-	 * @param {integer} [borderWidth=1]
+	 * @param {number} [borderWidth=1]
      */
-    prototype.drawRectangle = function(left, top, width, height, color, borderColor, borderWidth) {
-		if (borderColor === undefined) {
-			borderColor = null;
-		}
+    prototype.drawFilledRect = function(left, top, width, height, borderColor, fillColor, borderWidth) {
 		if (borderWidth === undefined) {
 			borderWidth = 1;
 		}
@@ -479,17 +479,18 @@ exports.Bitmap = (function() {
 		        }
             }
 			left += borderWidth;
-			top += borderWidth;
+			//noinspection JSSuspiciousNameCombination
+            top += borderWidth;
 			width = Math.max(width - borderWidth * 2, 0);
 			height = Math.max(height - borderWidth * 2, 0);
 		}
 		// Draw filled area
-		if (color !== null) {
+		if (fillColor !== null) {
 			right = left + width;
 			bottom = top + height;
 			for (y = top; y < bottom; y++) {
 	        	for (x = left; x < right; x++) {
-	                this.setPixel(x, y, color);
+	                this.setPixel(x, y, fillColor);
 	            }
 	        }
 		}
@@ -499,44 +500,53 @@ exports.Bitmap = (function() {
      * Draws a rectangle that's filled with a horizontal gradient.
      *
 	 * @method module:bitmap_manipulation.Bitmap#drawGradientRectangle
-     * @param {integer} left Starting x coordinate
-     * @param {integer} top Starting y coordinate
-     * @param {integer} width Width of the rectangle
-     * @param {integer} height Height of the rectangle
-     * @param {integer} leftColor Greyscale color of the leftmost pixel
-     * @param {integer} rightColor Greyscale color of the rightmost pixel
+     * @param {number} left Starting x coordinate
+     * @param {number} top Starting y coordinate
+     * @param {number} width Width of the rectangle
+     * @param {number} height Height of the rectangle
+     * @param {number} leftColor Greyscale color of the leftmost pixel
+     * @param {number} rightColor Greyscale color of the rightmost pixel
      */
-    prototype.drawGradientRectangle = function(left, top, width, height, leftColor, rightColor) {
-		let right = left + width;
-		let bottom = top + height;
-		for (let x = left; x < right; x++) {
-			let color = Math.round(leftColor + (x - left) / (width - 1) * (rightColor - leftColor));
-			for (let y = top; y < bottom; y++) {
-				this.setPixel(x, y, color);
-			}
-		}
+    prototype.drawGradientRect = function(left, top, width, height, leftColor, rightColor) {
+        for (let x = left; x < left + width; ++x) {
+            var value = calculateGradientValue(x - left, width, leftColor, rightColor);
+            for (let y = top; y < top + height; ++y) {
+                this.setPixel(x, y, value);
+            }
+        }
     };
 
-	/**
+    function calculateGradientValue(step, numSteps, leftColor, rightColor) {
+        if (step === 0) {
+            return leftColor;
+        }
+        if (step === numSteps - 1) {
+            return rightColor;
+        }
+        var changePerStep = (rightColor - leftColor + .5) / numSteps;
+        return Math.round(step * changePerStep) + leftColor;
+    }
+
+    /**
 	 * Draws a circle or ellipse.
 	 *
 	 * <em>Note:</em> Drawing borders lacks quality. Consider drawing a filled shape on top of
 	 * another.
 	 *
 	 * @method module:bitmap_manipulation.Bitmap#drawEllipse
-	 * @param {integer} left
-	 * @param {integer} top
-	 * @param {integer} width
-	 * @param {integer} height
-	 * @param {integer} color Color of the filling. Pass <code>null</code> for transparency
-	 * @param {integer} [borderColor]
-	 * @param {integer} [borderWidth=1]
+	 * @param {number} left
+	 * @param {number} top
+	 * @param {number} width
+	 * @param {number} height
+     * @param {?number} borderColor Color of the border. Pass <code>null</code> for transparency
+	 * @param {?number} fillColor Color of the filling. Pass <code>null</code> for transparency
+	 * @param {number} [borderWidth=1]
 	 */
-	prototype.drawEllipse = function(left, top, width, height, color, borderColor, borderWidth) {
+	prototype.drawEllipse = function(left, top, width, height, borderColor, fillColor, borderWidth) {
 		borderWidth = borderColor !== undefined && borderColor !== null ?
 				(borderWidth ? borderWidth : 1) : 0;
 
-		let hasSolidFilling = color !== null;
+		let hasSolidFilling = fillColor !== null;
 		let centerX = width / 2;
 		let centerY = height / 2;
 		let circleFactorY = width / height;  // Used to convert the ellipse to a circle for an
@@ -559,7 +569,7 @@ exports.Bitmap = (function() {
 							intermediateX + Math.sign(intermediateX) * borderWidth + 0.5, 2) +
 							innerCircleYSquared;
 					if (currentCircleRadiusSquared <= circleRadiusSquared) {
-						hasSolidFilling && this.setPixel(x, y, color);
+						hasSolidFilling && this.setPixel(x, y, fillColor);
 					} else {
 						this.setPixel(x, y, borderColor);
 					}
@@ -585,13 +595,13 @@ exports.Bitmap = (function() {
 	 *
 	 * @method module:bitmap_manipulation.Bitmap#drawBitmap
 	 * @param {Bitmap} bitmap
-	 * @param {integer} x
-	 * @param {integer} y
-	 * @param {integer} [transparentColor]
-	 * @param {integer} [sourceX]
-	 * @param {integer} [sourceY]
-	 * @param {integer} [width]
-	 * @param {integer} [height]
+	 * @param {number} x
+	 * @param {number} y
+	 * @param {number} [transparentColor]
+	 * @param {number} [sourceX]
+	 * @param {number} [sourceY]
+	 * @param {number} [width]
+	 * @param {number} [height]
 	 */
 	prototype.drawBitmap = function(bitmap, x, y, transparentColor, sourceX, sourceY, width, height) {
 		// Validate parameters
@@ -629,7 +639,7 @@ exports.Bitmap = (function() {
 		height -= height - Math.min(this._height - y, height);
 
 		// Transfer pixels
-		let bitmapData = bitmap.getData();
+		let bitmapData = bitmap.data();
 		for (
 			let lineOffset = (y * this._width + x) * this._bytesPerPixel,
 			    endOffset = ((y + height - 1) * this._width + x + width) * this._bytesPerPixel,
@@ -663,8 +673,8 @@ exports.Bitmap = (function() {
 	 * @method module:bitmap_manipulation.Bitmap#drawText
 	 * @param {Font} font
 	 * @param {string} text
-	 * @param {integer} x
-	 * @param {integer} y
+	 * @param {number} x
+	 * @param {number} y
 	 */
 	prototype.drawText = function(font, text, x, y) {
 		let fontBitmap = font.getBitmap();
@@ -770,19 +780,19 @@ exports.Bitmap = (function() {
 				transferPixel = function() {
 					fileBuffer.writeUInt8(this._readFunction.call(this._data, sourceOffset),
 							offset);
-				}
+				};
 				break;
 			} case 2: {
 				transferPixel = function() {
 					fileBuffer.writeUInt16LE(this._readFunction.call(this._data, sourceOffset),
 							offset);
-				}
+				};
 				break;
 			} case 4: {
 				transferPixel = function() {
 					fileBuffer.writeUInt32LE(this._readFunction.call(this._data, sourceOffset),
 							offset);
-				}
+				};
 				break;
 			}
 		}
@@ -881,10 +891,6 @@ exports.Font = (function() {
 					detailsAndBitmap.details.info.italic == lastDetailsAndBitmap.details.info.italic
 				)
 			);
-			for (let char of detailsAndBitmap.details.chars) {
-				assert(char.id !== undefined);
-				break;
-			}
 			// Restructure details object to make the data accessible by character keys
 			let newChars = { };
 			for (let char of detailsAndBitmap.details.chars) {
@@ -947,7 +953,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#getSizes
-	 * @returns {integer[]} The available font sizes in pixels
+	 * @returns {number[]} The available font sizes in pixels
 	 */
 	prototype.getSizes = function() {
 		let sizes = [];
@@ -961,7 +967,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#getSize
-	 * @returns {integer} The font size in pixels
+	 * @returns {number} The font size in pixels
 	 */
 	prototype.getSize = function() {
 		return this._size;
@@ -969,7 +975,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#setSize
-	 * @param {integer} size The font size in pixels
+	 * @param {number} size The font size in pixels
 	 */
 	prototype.setSize = function(size) {
 		if (!this._detailsAndBitmapToSize[size]) {
@@ -996,7 +1002,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#getColor
-	 * @returns {integer} The color of the current font size
+	 * @returns {number} The color of the current font size
 	 */
 	prototype.getColor = function() {
 		return this._color;
@@ -1007,7 +1013,7 @@ exports.Font = (function() {
 	 * perform a color replace action on the Bitmap of the current font size.
 	 *
 	 * @method module:bitmap_manipulation.Font#setColor
-	 * @param {integer} color
+	 * @param {number} newColor
 	 */
 	prototype.setColor = function(newColor) {
 		this._detailsAndBitmapToSize[this._size].bitmap.replaceColor(this._color, newColor);
@@ -1016,7 +1022,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#getTransparentColor
-	 * @returns {integer}
+	 * @returns {number}
 	 */
 	prototype.getTransparentColor = function() {
 		return this._transparentColor;
@@ -1024,7 +1030,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#getLineHeight
-	 * @returns {integer} The line height of the current font size
+	 * @returns {number} The line height of the current font size
 	 */
 	prototype.getLineHeight = function() {
 		return this._detailsAndBitmapToSize[this._size].details.common.lineHeight;
@@ -1032,7 +1038,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#setLineHeight
-	 * @param {integer} lineHeight The line height of the current font size
+	 * @param {number} lineHeight The line height of the current font size
 	 */
 	prototype.setLineHeight = function(lineHeight) {
 		this._detailsAndBitmapToSize[this._size].details.common.lineHeight = lineHeight;
@@ -1040,7 +1046,7 @@ exports.Font = (function() {
 
 	/**
 	 * @method module:bitmap_manipulation.Font#getBaseLineY
-	 * @returns {integer} The y-coordinate of the base line of the current font size
+	 * @returns {number} The y-coordinate of the base line of the current font size
 	 */
 	prototype.getBaseLineY = function() {
 		return this._detailsAndBitmapToSize[this._size].details.common.base;
