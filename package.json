@@ -8,6 +8,12 @@
     "manipulation"
   ],
   "author": "Jens Vonderheide <jens@vdheide.de>",
+  "contributors": [
+    {
+      "name": "J Waechter",
+      "url": "https://github.com/j-waechter"
+    }
+  ],
   "main": "index.js",
   "version": "1.0.0",
   "engines": {
