@@ -1,4 +1,4 @@
-# bitmap_manipulation
+# bitmap-manipulation
 
 Node.js package for in-memory bitmap manipulation.
 
@@ -23,7 +23,7 @@ Node.js package for in-memory bitmap manipulation.
 ```javascript
 "use strict";
 
-const bitmapManipulation = require("bitmap_manipulation");
+const bitmapManipulation = require("bitmap-manipulation");
 
 // Create bitmap
 let bitmap = new bitmapManipulation.Bitmap(400, 300);
