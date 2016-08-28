@@ -89,3 +89,23 @@ describe("clear", function () {
         }
     });
 });
+
+describe("replaceColor", function () {
+    it("sets all pixel values of the given color to a new one, without changing any other pixels", function () {
+        let image = new bitmapManipulation.Bitmap(3, 3, 2, bitmapManipulation.Endianness.LITTLE);
+        for (let x = 0; x < 3; ++x) {
+            for (let y = 0; y < 3; ++y) {
+                image.setPixel(x, y, y);
+            }
+        }
+
+        image.replaceColor(2, 4);
+
+        for (let x = 0; x < 3; ++x) {
+            for (let y = 0; y < 3; ++y) {
+                let color = image.getPixel(x, y);
+                expect(color).toBe(y === 2 ? 4 : y);
+            }
+        }
+    });
+});
