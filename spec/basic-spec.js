@@ -2,6 +2,7 @@
 "use strict";
 
 const bitmapManipulation = require("../");
+const CanvasSpy = require("./CanvasSpy");
 
 describe("Creation", function () {
     it("all pixels are initially zero", function () {
@@ -21,6 +22,24 @@ describe("Creation", function () {
         expect(create.bind(null, 0)).toThrow();
         expect(create.bind(null, 6)).toThrow();
         expect(create.bind(null, 3)).toThrow();
+    });
+});
+
+describe("getPixel", function () {
+    it("is forwarded to the canvas", function () {
+        let spy = new CanvasSpy();
+        let image = new bitmapManipulation.Bitmap(spy);
+        image.getPixel(1, 2);
+        expect(spy.getPixelCalled).toEqual([1, 2]);
+    });
+});
+
+describe("setPixel", function () {
+    it("is forwarded to the canvas", function () {
+        let spy = new CanvasSpy();
+        let image = new bitmapManipulation.Bitmap(spy);
+        image.setPixel(1, 2, 3);
+        expect(spy.setPixelCalled).toEqual([1, 2, 3]);
     });
 });
 
