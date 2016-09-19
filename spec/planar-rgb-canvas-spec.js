@@ -1,8 +1,8 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-const PlanarRGBCanvas = require("../lib/canvas/PlanarRGBCanvas");
 const bitmapManipulation = require("..");
+const PlanarRGBCanvas = bitmapManipulation.canvas.PlanarRGB;
 
 describe("Creation", function () {
     it("creates a Buffer sized to bytes per pixel * columns * rows * 3", function () {

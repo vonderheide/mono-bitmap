@@ -1,8 +1,8 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-const GrayscaleCanvas = require("../lib/canvas/GrayscaleCanvas");
 const bitmapManipulation = require("..");
+const GrayscaleCanvas = bitmapManipulation.canvas.Grayscale;
 
 describe("Creation", function () {
     it("creates a Buffer sized to bytes per pixel * columns * rows", function () {

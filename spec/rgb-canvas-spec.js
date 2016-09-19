@@ -1,8 +1,8 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-const RGBCanvas = require("../lib/canvas/RGBCanvas");
 const bitmapManipulation = require("..");
+const RGBCanvas = bitmapManipulation.canvas.RGB;
 
 describe("Creation", function () {
     it("creates a Buffer sized to bytes per pixel * columns * rows * 3", function () {
