@@ -1,7 +1,7 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-const RGBCanvas = require("../lib/RGBCanvas");
+const RGBCanvas = require("../lib/canvas/RGBCanvas");
 const bitmapManipulation = require("..");
 
 describe("Creation", function () {

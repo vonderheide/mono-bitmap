@@ -1,7 +1,7 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-const GrayscaleCanvas = require("../lib/GrayscaleCanvas");
+const GrayscaleCanvas = require("../lib/canvas/GrayscaleCanvas");
 const bitmapManipulation = require("..");
 
 describe("Creation", function () {

@@ -1,6 +1,6 @@
 "use strict";
 
-const Canvas = require("../lib/Canvas");
+const Canvas = require("../lib/canvas/Canvas");
 
 // TODO: Better use a mock framework
 

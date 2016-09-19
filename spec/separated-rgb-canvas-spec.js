@@ -1,7 +1,7 @@
 /* eslint-env node, jasmine */
 "use strict";
 
-const SeparatedRGBCanvas = require("../lib/SeparatedRGBCanvas");
+const SeparatedRGBCanvas = require("../lib/canvas/SeparatedRGBCanvas");
 const bitmapManipulation = require("..");
 
 describe("Creation", function () {
